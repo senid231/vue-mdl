@@ -5,14 +5,24 @@
 </template>
 
 <script>
-/* global componentHandler*/
-
 export default {
-  props: ['displayOn'],
-  ready () {
+  props: {
+    displayOn: {
+      type: String,
+      required: true
+    },
+    eventSource: {
+      type: Object,
+      required: false,
+      default: function () {
+        return this.$root
+      }
+    }
+  },
+  mounted () {
     componentHandler.upgradeElement(this.$el, 'MaterialSnackbar')
-    this.$on(this.displayOn, (snackarConfig) => {
-      this.$el.MaterialSnackbar.showSnackbar(snackarConfig)
+    this.eventSource.$on(this.displayOn, (snackbarConfig) => {
+      this.$el.MaterialSnackbar.showSnackbar(snackbarConfig)
     })
   }
 }
